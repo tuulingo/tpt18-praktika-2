@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ussim2ng"
         mc:Ignorable="d"
-        Title="Snake Game" Height="450" Width="800" MouseDown="Window_MouseDown" KeyDown="Window_KeyDown">
+        Title="Snake Game" Height="450" Width="800" MouseDown="Window_MouseDown">
     <Grid>
         <Canvas Background="LightGreen">
             <Rectangle Name="rectangle1" Height="124" Width="50" Fill="Black" Stroke="Purple" StrokeThickness="4
