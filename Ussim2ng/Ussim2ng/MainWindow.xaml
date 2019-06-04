@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ussim2ng"
         mc:Ignorable="d"
-        Title="Snake Game" Height="450" Width="800" MouseDown="Window_MouseDown">
+        Title="Snake Game" KeyDown="Window_KeyDown_1" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Topmost="True">
     <Grid>
-        <Canvas Background="LightGreen">
-            <Rectangle Name="rectangle1" Height="124" Width="50" Fill="Black" Stroke="Purple" StrokeThickness="4
-                       " Canvas.Left="87" Canvas.Top="26" ></Rectangle>
+        <Canvas Name="board" Background="LightGreen" Height="480" Width="480">
+        </Canvas>
+        <Canvas>
+            <Rectangle Name="rectangle1" Height="30" Width="30" Fill="Black" Stroke="Purple" StrokeThickness="4
+                       " Canvas.Left="30" Canvas.Top="30" ></Rectangle>
         </Canvas>
     </Grid>
 </Window>
