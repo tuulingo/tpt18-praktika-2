@@ -58,10 +58,13 @@ namespace Ussim2ng
         {
             Random rnd = new Random();
 
-            for (int y = 0; y < Cellcount; y++)
+            for (int y = 0; y < 1; y++)
             {
-                for (int x = 0; x < Cellcount; x++)
+                for (int x = 0; x < 1; x++)
                 {
+                    Ellipse food = new Ellipse();
+                    food.Width = CellSize;
+                    food.Height = CellSize;
 
                 }
             }
