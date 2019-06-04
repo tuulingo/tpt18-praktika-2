@@ -25,12 +25,58 @@ namespace Ussim2ng
 
         public MainWindow()
         {
-            InitializeComponent();
 
-            test();
+            InitializeComponent();
+            DrawBackground();
+            initsnake();
+            Canvas.SetTop(snake, 0);
+            Canvas.SetLeft(snake, 0);
         }
 
-        public void test()
+        public void MoveSnake(bool up, bool down, bool right, bool left)
+        {
+            if (up || down)
+            {
+                    double CurrentTop = Canvas.GetTop(snake);
+                    double Newtop = up
+                        ? CurrentTop - CellSize
+                        : CurrentTop + CellSize;
+                    Canvas.SetTop(snake, Newtop);
+            }
+
+            if (left || right)
+            {
+                double Currentleft = Canvas.GetLeft(snake);
+                double Newleft = left
+                    ? Currentleft + CellSize
+                    : Currentleft - CellSize;
+                Canvas.SetLeft(snake, Newleft);
+            }
+        }
+
+        public void food()
+        {
+            Random rnd = new Random();
+
+            for (int y = 0; y < Cellcount; y++)
+            {
+                for (int x = 0; x < Cellcount; x++)
+                {
+
+                }
+            }
+        }
+
+        private void initsnake()
+        {
+            snake.Width = CellSize;
+            snake.Height = CellSize;
+            Canvas.SetTop(snake, Cellcount / 2);
+            Canvas.SetLeft(snake, Cellcount / 2);
+        }
+
+
+        public void DrawBackground()
         {
 
             for (int y = 0; y < Cellcount; y++)
@@ -55,33 +101,13 @@ namespace Ussim2ng
 
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Right)
-            {
-                double currentLeft = Canvas.GetLeft(rectangle1);
-                double newleft = currentLeft + 30;
-                Canvas.SetLeft(rectangle1, newleft);
-            }
+            bool up = e.Key == Key.Up;
+            bool down = e.Key == Key.Down;
+            bool left = e.Key == Key.Left;
+            bool right = e.Key == Key.Right;
 
-            if (e.Key == Key.Down)
-            {
-                double currentDown = Canvas.GetTop(rectangle1);
-                double newDown = currentDown + 30;
-                Canvas.SetTop(rectangle1, newDown);
-            }
+            MoveSnake(up, down, left, right);
 
-            if (e.Key == Key.Left)
-            {
-                double currentLeft = Canvas.GetLeft(rectangle1);
-                double newleft = currentLeft - 30;
-                Canvas.SetLeft(rectangle1, newleft);
-            }
-
-            if (e.Key == Key.Up)
-            {
-                double currentLeft = Canvas.GetTop(rectangle1);
-                double newleft = currentLeft - 30;
-                Canvas.SetTop(rectangle1, newleft);
-            }
         }
     }
 }
