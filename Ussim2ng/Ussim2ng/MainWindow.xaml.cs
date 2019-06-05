@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Ussim2ng
+namespace SnakeGame
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,56 +24,36 @@ namespace Ussim2ng
         const double CellSize = 30;
         const int Cellcount = 16;
         DispatcherTimer timer;
+        Snake snake;
 
-        Direction snakeDirection;
+        //Direction snakeDirection;
 
         public MainWindow()
         {
 
             InitializeComponent();
             DrawBackground();
-            initsnake();
+
+            snake = new Snake(snakeShape, CellSize, Cellcount);
+            snake.Init();
             food();
-            Canvas.SetTop(snake, 0);
-            Canvas.SetLeft(snake, 0);
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Interval = TimeSpan.FromSeconds(2);
             timer.Tick += Timer_tick;
             timer.Start();
         }
 
-        private void DirectSnake(Direction direction)
-        {
-            snakeDirection = direction;
-            lblSnakeDirection.Content = $"Direction: {direction}";
+        /* private void DirectSnake(Direction direction)
+         {
+             snakeDirection = direction;
+             lblSnakeDirection.Content = $"Direction: {direction}";
 
-        }
+         }*/
 
         private void Timer_tick(object sender, EventArgs e)
         {
-            MoveSnake(snakeDirection);
-        }
-
-        public void MoveSnake(Direction direction)
-        {
-            if (direction == Direction.Up || direction == Direction.Down)
-            {
-                    double CurrentTop = Canvas.GetTop(snake);
-                    double Newtop = direction == Direction.Up
-                        ? CurrentTop - CellSize
-                        : CurrentTop + CellSize;
-                    Canvas.SetTop(snake, Newtop);
-            }
-
-            if (direction == Direction.Left || direction == Direction.Right)
-            {
-                double Currentleft = Canvas.GetLeft(snake);
-                double Newleft = direction == Direction.Left
-                    ? Currentleft + CellSize
-                    : Currentleft - CellSize;
-                Canvas.SetLeft(snake, Newleft);
-            }
+            snake.Move();
         }
 
         public void food()
@@ -83,7 +63,7 @@ namespace Ussim2ng
             int column = rnd.Next(Cellcount);
             int left = rnd.Next(Cellcount);
             int top = rnd.Next(Cellcount);
-            for (column= 0; column < Cellcount; column++)
+            for (column = 0; column < Cellcount; column++)
             {
                 for (row = 0; row < Cellcount; row++)
                 {
@@ -100,18 +80,6 @@ namespace Ussim2ng
             }
         }
 
-        private void initsnake()
-        {
-            snake.Width = CellSize;
-            snake.Height = CellSize;
-            double coord = Cellcount * CellSize / 2;
-            Canvas.SetTop(snake, coord);
-            Canvas.SetLeft(snake,coord);
-
-            DirectSnake(Direction.Down);
-        }
-
-
         public void DrawBackground()
         {
 
@@ -120,7 +88,7 @@ namespace Ussim2ng
                 for (int x = 0; x < Cellcount; x++)
                 {
                     if (x % 2 == 0 && y % 2 == 0 || x % 2 == 1 && y % 2 == 1)
-                    { 
+                    {
                         Rectangle r1 = new Rectangle();
                         r1.Height = CellSize;
                         r1.Width = CellSize;
@@ -147,26 +115,17 @@ namespace Ussim2ng
                     direction = Direction.Down;
                     break;
                 case Key.Left:
-                    direction = Direction.Right;
+                    direction = Direction.Left;
                     break;
                 case Key.Right:
-                    direction = Direction.Left;
+                    direction = Direction.Right;
                     break;
                 default:
                     return;
             }
 
-            snakeDirection = direction;
+            snake.ChangeDirection(direction);
 
         }
-
-        public enum Direction
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
-
     }
 }
