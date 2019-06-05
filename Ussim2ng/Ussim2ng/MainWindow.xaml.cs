@@ -29,25 +29,26 @@ namespace Ussim2ng
             InitializeComponent();
             DrawBackground();
             initsnake();
+            food();
             Canvas.SetTop(snake, 0);
             Canvas.SetLeft(snake, 0);
         }
 
-        public void MoveSnake(bool up, bool down, bool right, bool left)
+        public void MoveSnake(Direction direction)
         {
-            if (up || down)
+            if (direction == Direction.Up || direction == Direction.Down)
             {
                     double CurrentTop = Canvas.GetTop(snake);
-                    double Newtop = up
+                    double Newtop = direction == Direction.Up
                         ? CurrentTop - CellSize
                         : CurrentTop + CellSize;
                     Canvas.SetTop(snake, Newtop);
             }
 
-            if (left || right)
+            if (direction == Direction.Left || direction == Direction.Right)
             {
                 double Currentleft = Canvas.GetLeft(snake);
-                double Newleft = left
+                double Newleft = direction == Direction.Left
                     ? Currentleft + CellSize
                     : Currentleft - CellSize;
                 Canvas.SetLeft(snake, Newleft);
@@ -57,14 +58,21 @@ namespace Ussim2ng
         public void food()
         {
             Random rnd = new Random();
-
-            for (int y = 0; y < 1; y++)
+            int row = rnd.Next(Cellcount);
+            int column = rnd.Next(Cellcount);
+            for (column= 0; column < Cellcount; column++)
             {
-                for (int x = 0; x < 1; x++)
+                for (row = 0; row < Cellcount; row++)
                 {
+
                     Ellipse food = new Ellipse();
                     food.Width = CellSize;
                     food.Height = CellSize;
+                    food.Fill = Brushes.Red;
+                    Canvas.SetLeft(food, CellSize * row);
+                    Canvas.SetTop(food, CellSize * column);
+                    board.Children.Add(food);
+
 
                 }
             }
@@ -104,13 +112,38 @@ namespace Ussim2ng
 
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
-            bool up = e.Key == Key.Up;
-            bool down = e.Key == Key.Down;
-            bool left = e.Key == Key.Left;
-            bool right = e.Key == Key.Right;
+            Direction direction;
+            if (e.Key == Key.Up)
+            {
+                direction = Direction.Up;
+            }
+            else if (e.Key == Key.Down)
+            {
+                direction = Direction.Down;
+            }
+            else if (e.Key == Key.Left)
+            {
+                direction = Direction.Right;
+            }
+            else if (e.Key == Key.Right)
+            {
+                direction = Direction.Left;
+            }
+            else
+                return;
 
-            MoveSnake(up, down, left, right);
+
+            MoveSnake(direction);
 
         }
+
+        public enum Direction
+        {
+            Up,
+            Down,
+            Left,
+            Right
+        }
+
     }
 }
