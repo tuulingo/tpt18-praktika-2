@@ -37,9 +37,10 @@ namespace SnakeGame
             snake = new Snake(snakeShape, CellSize, Cellcount);
             snake.Init();
             food();
+            borders();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(2);
+            timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Timer_tick;
             timer.Start();
         }
@@ -126,6 +127,37 @@ namespace SnakeGame
 
             snake.ChangeDirection(direction);
 
+        }
+
+        private bool Borders(KeyEventArgs e)
+        {
+            if (Canvas.GetTop(snakeShape) < 0 || Canvas.GetTop(snakeShape) > 480 || Canvas.GetLeft(snakeShape) > 480
+                || Canvas.GetLeft(snakeShape) < 0)
+            {
+                double coord = Cellcount * CellSize / 2;
+                Canvas.SetTop(snakeShape, coord);
+                Canvas.SetLeft(snakeShape, coord);
+
+               if(MessageBox.Show("Game Over!\n\nPress space to play again."), e.Key == Key.Space)
+               {
+                    snake.Init();
+               }
+               else
+               {
+                    Application.Current.Shutdown();
+               }
+                return false;
+            }
+
+        }
+
+        
+
+        private void GameOver()
+        {
+            double coord = Cellcount * CellSize / 2;
+            Canvas.SetTop(snakeShape, coord);
+            Canvas.SetLeft(snakeShape, coord);
         }
     }
 }

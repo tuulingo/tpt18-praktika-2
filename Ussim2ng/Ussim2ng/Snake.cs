@@ -65,9 +65,6 @@ namespace SnakeGame
             }
         }
 
-        public void borders()
-        {
-            if ()
-        }
+
     }
 }
