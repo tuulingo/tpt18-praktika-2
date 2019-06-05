@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Title="Snake Game" KeyDown="Window_KeyDown_1" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Topmost="True">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Name="lblSnakeDirection" FontWeight="Bold"></Label>
+        </StackPanel>
         <Canvas Name="board" Background="LightGreen" Height="480" Width="480">
         </Canvas>
         <Canvas>

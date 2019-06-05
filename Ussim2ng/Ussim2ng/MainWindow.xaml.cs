@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Ussim2ng
 {
@@ -22,6 +23,9 @@ namespace Ussim2ng
     {
         const double CellSize = 30;
         const int Cellcount = 16;
+        DispatcherTimer timer;
+
+        Direction snakeDirection;
 
         public MainWindow()
         {
@@ -32,6 +36,23 @@ namespace Ussim2ng
             food();
             Canvas.SetTop(snake, 0);
             Canvas.SetLeft(snake, 0);
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Tick += Timer_tick;
+            timer.Start();
+        }
+
+        private void DirectSnake(Direction direction)
+        {
+            snakeDirection = direction;
+            lblSnakeDirection.Content = $"Direction: {direction}";
+
+        }
+
+        private void Timer_tick(object sender, EventArgs e)
+        {
+            MoveSnake(snakeDirection);
         }
 
         public void MoveSnake(Direction direction)
@@ -60,17 +81,18 @@ namespace Ussim2ng
             Random rnd = new Random();
             int row = rnd.Next(Cellcount);
             int column = rnd.Next(Cellcount);
+            int left = rnd.Next(Cellcount);
+            int top = rnd.Next(Cellcount);
             for (column= 0; column < Cellcount; column++)
             {
                 for (row = 0; row < Cellcount; row++)
                 {
-
                     Ellipse food = new Ellipse();
                     food.Width = CellSize;
                     food.Height = CellSize;
                     food.Fill = Brushes.Red;
-                    Canvas.SetLeft(food, CellSize * row);
-                    Canvas.SetTop(food, CellSize * column);
+                    Canvas.SetLeft(food, left * CellSize);
+                    Canvas.SetTop(food, top * CellSize);
                     board.Children.Add(food);
 
 
@@ -82,8 +104,11 @@ namespace Ussim2ng
         {
             snake.Width = CellSize;
             snake.Height = CellSize;
-            Canvas.SetTop(snake, Cellcount / 2);
-            Canvas.SetLeft(snake, Cellcount / 2);
+            double coord = Cellcount * CellSize / 2;
+            Canvas.SetTop(snake, coord);
+            Canvas.SetLeft(snake,coord);
+
+            DirectSnake(Direction.Down);
         }
 
 
@@ -113,27 +138,25 @@ namespace Ussim2ng
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
             Direction direction;
-            if (e.Key == Key.Up)
+            switch (e.Key)
             {
-                direction = Direction.Up;
+                case Key.Up:
+                    direction = Direction.Up;
+                    break;
+                case Key.Down:
+                    direction = Direction.Down;
+                    break;
+                case Key.Left:
+                    direction = Direction.Right;
+                    break;
+                case Key.Right:
+                    direction = Direction.Left;
+                    break;
+                default:
+                    return;
             }
-            else if (e.Key == Key.Down)
-            {
-                direction = Direction.Down;
-            }
-            else if (e.Key == Key.Left)
-            {
-                direction = Direction.Right;
-            }
-            else if (e.Key == Key.Right)
-            {
-                direction = Direction.Left;
-            }
-            else
-                return;
 
-
-            MoveSnake(direction);
+            snakeDirection = direction;
 
         }
 
