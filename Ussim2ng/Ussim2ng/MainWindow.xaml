@@ -5,20 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnakeGame"
         mc:Ignorable="d"
-        Title="Snake Game" KeyDown="Window_KeyDown_1" ResizeMode="NoResize" SizeToContent="WidthAndHeight" Topmost="True">
+        Title="Snake Game" 
+        ResizeMode="NoResize" Topmost="True" 
+        SizeToContent="WidthAndHeight"
+        KeyDown="Window_KeyDown_1">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Name="lblGameStatus" FontWeight="Bold"></Label>
             <Label Name="lblSnakeDirection" FontWeight="Bold"></Label>
+            <Label Name="lblScore" FontWeight="Bold"></Label>
         </StackPanel>
-        <Canvas Grid.Row="1"  Name="board" Background="LightGreen" Height="480" Width="480">
-        </Canvas>
-        <Canvas>
-            <Rectangle Name="snakeShape" Height="30" Width="30" Fill="Black" Stroke="Purple" StrokeThickness="4 
-                       " Panel.ZIndex="10" Canvas.Left="0" Canvas.Top="0" ></Rectangle>
+        <Canvas 
+            Grid.Row="1"
+            Name="board" 
+            Height="480" Width="480">
+            
+            <Rectangle 
+                Name="snakeShape"
+                Fill="MediumBlue"
+                Panel.ZIndex="10">
+            </Rectangle>
+            <Ellipse Name="foodShape" Fill="Red" Panel.ZIndex="5"></Ellipse>
         </Canvas>
     </Grid>
 </Window>
