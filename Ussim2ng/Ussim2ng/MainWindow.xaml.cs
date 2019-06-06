@@ -84,7 +84,6 @@ namespace SnakeGame
         private void Eat()
         {
             Ellipse saba = new Ellipse();
-            Ellipse 
             LinkedList<int> b = new LinkedList<int>();
         }
 
