@@ -33,10 +33,9 @@ namespace SnakeGame
         int foodRow;
         int foodCol;
 
-        int snakeRow;
-        int snakeCol;
-
         int points = 0;
+
+        Snakepart snakePart = new Snakepart();  
 
 
         public MainWindow()
@@ -49,7 +48,7 @@ namespace SnakeGame
             InitFood();
 
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(0.5);
+            timer.Interval = TimeSpan.FromSeconds(0.2);
             timer.Tick += Timer_tick;
             timer.Start();
             ChangePoints(0);
@@ -64,10 +63,10 @@ namespace SnakeGame
         {
             snakeShape.Height = CellSize;
             snakeShape.Width = CellSize;
-            SetShape(snakeShape, snakeRow, snakeCol - 4);
             int index = Cellcount / 2;
-            snakeRow = index;
-            snakeCol = index;
+            snakePart.Row = index;
+            snakePart.Col = index;
+            SetShape(snakeShape, snakePart.Row, snakePart.Col - 4);
 
             ChangeSnakeDirection(Direction.Up);
         }
@@ -80,6 +79,13 @@ namespace SnakeGame
             foodRow = rnd.Next(0, Cellcount);
             foodCol = rnd.Next(0, Cellcount);
             SetShape(foodShape, foodRow, foodCol);
+        }
+
+        private void Eat()
+        {
+            Ellipse saba = new Ellipse();
+            Ellipse 
+            LinkedList<int> b = new LinkedList<int>();
         }
 
         private void ChangePoints(int newPoints)
@@ -108,16 +114,16 @@ namespace SnakeGame
             switch (snakeDirection)
             {
                 case Direction.Up:
-                    snakeRow--;
+                    snakePart.Row--;
                     break;
                 case Direction.Down:
-                    snakeRow++;
+                    snakePart.Row++;
                     break;
                 case Direction.Left:
-                    snakeCol--;
+                    snakePart.Col--;
                     break;
                 case Direction.Right:
-                    snakeCol++;
+                    snakePart.Col++;
                     break;
                 default:
                     return;
@@ -125,16 +131,16 @@ namespace SnakeGame
 
             
 
-            if (snakeRow < 0 || snakeRow >= 16 || snakeCol < 0 || snakeCol >= 16)
+            if (snakePart.Row < 0 || snakePart.Row >= 16 || snakePart.Col < 0 || snakePart.Col >= 16)
             {
 
                 ChangeGameStatus(GameStatus.GameOver);
                 return;
 
             }
-            SetShape(snakeShape, snakeRow, snakeCol);
+            SetShape(snakeShape, snakePart.Row, snakePart.Col);
 
-            bool food = snakeRow == foodRow && snakeCol == foodCol;
+            bool food = snakePart.Row == foodRow && snakePart.Col == foodCol;
             if (food)
             {
                 ChangePoints(points + 1);
@@ -178,8 +184,7 @@ namespace SnakeGame
                     r.Width = CellSize;
                     r.Height = CellSize;
                     r.Fill = color;
-                    Canvas.SetTop(r, row * CellSize);
-                    Canvas.SetLeft(r, col * CellSize);
+                    SetShape(r, col, row);
                     board.Children.Add(r);
 
                     color = color == color1 ? color2 : color1;

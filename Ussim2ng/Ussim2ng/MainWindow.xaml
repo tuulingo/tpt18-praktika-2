@@ -29,7 +29,7 @@
                 Fill="MediumBlue"
                 Panel.ZIndex="10">
             </Rectangle>
-            <Ellipse Name="foodShape" Fill="Red" Panel.ZIndex="5" Stroke="Black" StrokeThickness="2" Image.></Ellipse>
+            <Ellipse Name="foodShape" Fill="Red" Panel.ZIndex="5" Stroke="Black" StrokeThickness="2"></Ellipse>
         </Canvas>
     </Grid>
 </Window>
