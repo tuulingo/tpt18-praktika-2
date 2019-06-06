@@ -26,10 +26,17 @@ namespace SnakeGame
         const int Cellcount = 16;
         DispatcherTimer timer;
 
+        Random rnd = new Random();
         Direction snakeDirection;
         GameStatus gamestatus;
+
+        int foodRow;
+        int foodCol;
+
         int snakeRow;
         int snakeCol;
+
+        int points = 0;
 
 
         public MainWindow()
@@ -39,15 +46,19 @@ namespace SnakeGame
             DrawBackground();
 
             InitSnake();
-            food();
+            InitFood();
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(0.5);
             timer.Tick += Timer_tick;
             timer.Start();
+            ChangePoints(0);
+
+            rnd = new Random();
 
             ChangeGameStatus(GameStatus.Ongoing);
         }
+
 
         private void InitSnake()
         {
@@ -59,6 +70,23 @@ namespace SnakeGame
             snakeCol = index;
 
             ChangeSnakeDirection(Direction.Up);
+        }
+
+        private void InitFood()
+        {
+            foodShape.Height = CellSize;
+            foodShape.Width = CellSize;
+
+            foodRow = rnd.Next(0, Cellcount);
+            foodCol = rnd.Next(0, Cellcount);
+            SetShape(foodShape, foodRow, foodCol);
+        }
+
+        private void ChangePoints(int newPoints)
+        {
+            points = newPoints;
+            lblPoints.Content =
+                $"Points: {points}";
         }
 
         private void ChangeGameStatus(GameStatus newGameStatus)
@@ -106,6 +134,13 @@ namespace SnakeGame
             }
             SetShape(snakeShape, snakeRow, snakeCol);
 
+            bool food = snakeRow == foodRow && snakeCol == foodCol;
+            if (food)
+            {
+                ChangePoints(points + 1);
+                InitFood();
+            }
+
         }
 
         private void SetShape(Shape shape, int row, int col)
@@ -125,30 +160,6 @@ namespace SnakeGame
             }
 
             MoveSnake();
-        }
-
-        public void food()
-        {
-            Random rnd = new Random();
-            int row = rnd.Next(Cellcount);
-            int column = rnd.Next(Cellcount);
-            int left = rnd.Next(Cellcount);
-            int top = rnd.Next(Cellcount);
-            for (column = 0; column < Cellcount; column++)
-            {
-                for (row = 0; row < Cellcount; row++)
-                {
-                    Ellipse food = new Ellipse();
-                    food.Width = CellSize;
-                    food.Height = CellSize;
-                    food.Fill = Brushes.Red;
-                    Canvas.SetLeft(food, left * CellSize);
-                    Canvas.SetTop(food, top * CellSize);
-                    board.Children.Add(food);
-
-
-                }
-            }
         }
 
         public void DrawBackground()
