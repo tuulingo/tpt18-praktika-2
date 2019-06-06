@@ -87,6 +87,7 @@ namespace SnakeGame
             LinkedList<int> b = new LinkedList<int>();
         }
 
+
         private void ChangePoints(int newPoints)
         {
             points = newPoints;
@@ -110,6 +111,7 @@ namespace SnakeGame
 
         private void MoveSnake()
         {
+
             switch (snakeDirection)
             {
                 case Direction.Up:
@@ -191,15 +193,84 @@ namespace SnakeGame
             }
         }
 
-        private void Window_KeyDown_1(object sender, KeyEventArgs e)
+        private void Window_KeyDown_1(object sender, KeyEventArgs e, Direction direction)
         {
+            if (e.Key == Key.Up)
+            {
+                if (direction == Direction.Down)
+                {
+                    direction = Direction.Down;
+                }
+
+                else 
+                {
+                    direction = Direction.Up;
+                }
+
+            }
+
+            if (e.Key == Key.Up)
+            {
+                if (direction == Direction.Down)
+                {
+                    direction = Direction.Down;
+                }
+
+                else
+                {
+                    direction = Direction.Up;
+                }
+
+            }
+
+            if (e.Key == Key.Down)
+            {
+                if (direction == Direction.Up)
+                {
+                    direction = Direction.Up;
+                }
+
+                else
+                {
+                    direction = Direction.Down;
+                }
+
+            }
+
+            if (e.Key == Key.Right)
+            {
+                if (direction == Direction.Left)
+                {
+                    direction = Direction.Left;
+                }
+
+                else
+                {
+                    direction = Direction.Right;
+                }
+
+            }
+
+            if (e.Key == Key.Left)
+            {
+                if (direction == Direction.Right)
+                {
+                    direction = Direction.Right;
+                }
+
+                else
+                {
+                    direction = Direction.Left;
+                }
+
+            }
+
             {
                 if (gamestatus != GameStatus.Ongoing)
                 {
                     return;
                 }
 
-                Direction direction;
                 switch (e.Key)
                 {
 
