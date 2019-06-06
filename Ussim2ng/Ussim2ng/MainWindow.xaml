@@ -14,7 +14,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Name="lblSnakeDirection" FontWeight="Bold"></Label>
         </StackPanel>
-        <Canvas Name="board" Background="LightGreen" Height="480" Width="480">
+        <Canvas Grid.Row="1"  Name="board" Background="LightGreen" Height="480" Width="480">
         </Canvas>
         <Canvas>
             <Rectangle Name="snakeShape" Height="30" Width="30" Fill="Black" Stroke="Purple" StrokeThickness="4 
