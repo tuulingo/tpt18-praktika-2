@@ -60,7 +60,6 @@
     </ApplicationDefinition>
     <Compile Include="GameStatus.cs" />
     <Compile Include="Direction.cs" />
-    <Compile Include="Score.cs" />
     <Compile Include="Snake.cs" />
     <Compile Include="Snakepart.cs" />
     <Page Include="MainWindow.xaml">

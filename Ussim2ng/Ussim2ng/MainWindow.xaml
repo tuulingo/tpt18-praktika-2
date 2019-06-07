@@ -23,12 +23,6 @@
             Grid.Row="1"
             Name="board" 
             Height="480" Width="480">
-            
-            <Rectangle 
-                Name="snakeShape"
-                Fill="MediumBlue"
-                Panel.ZIndex="10">
-            </Rectangle>
             <Ellipse Name="foodShape" Fill="Red" Panel.ZIndex="5" Stroke="Black" StrokeThickness="2"></Ellipse>
         </Canvas>
     </Grid>

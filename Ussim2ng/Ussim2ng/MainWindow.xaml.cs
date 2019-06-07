@@ -25,7 +25,7 @@ namespace SnakeGame
         const double CellSize = 30;
         const int Cellcount = 16;
         DispatcherTimer timer;
-
+        Direction direction;
         Random rnd = new Random();
         Direction snakeDirection;
         GameStatus gamestatus;
@@ -33,10 +33,11 @@ namespace SnakeGame
         int foodRow;
         int foodCol;
 
+        int snakeheadRow;
+        int snakeheadCol;
+
         int points = 0;
-
-        Snakepart snakePart = new Snakepart();  
-
+        LinkedList<Rectangle> snakeParts = new LinkedList<Rectangle>();
 
         public MainWindow()
         {
@@ -61,12 +62,32 @@ namespace SnakeGame
 
         private void InitSnake()
         {
-            snakeShape.Height = CellSize;
-            snakeShape.Width = CellSize;
+
             int index = Cellcount / 2;
-            snakePart.Row = index;
-            snakePart.Col = index;
-            SetShape(snakeShape, snakePart.Row, snakePart.Col - 4);
+
+            for (int i = 0; i < 3; i++)
+            {
+                int row = index;
+                int col = index + i;
+
+                Rectangle r = new Rectangle();
+                r.Height = CellSize;
+                r.Width = CellSize;
+                r.Fill = Brushes.MidnightBlue;
+                Panel.SetZIndex(r, 10);
+                SetShape(r, row, index + i);
+
+                SetShape(r, row, col);
+                board.Children.Add(r);
+                snakeParts.AddLast(r);
+
+                if (i == 0)
+                {
+                    snakeheadRow = row;
+                    snakeheadCol = col;
+                }
+
+            }
 
             ChangeSnakeDirection(Direction.Up);
         }
@@ -84,22 +105,23 @@ namespace SnakeGame
         private void Eat()
         {
 
-            LinkedList<int> b = new LinkedList<int>();
-            b.AddLast(1);
-            b.AddLast(2);
-            int temp = b.Last();
+            /*   LinkedList<int> b = new LinkedList<int>();
+               b.AddLast(1);
+               b.AddLast(2);
+               int temp = b.Last();
 
-            for (temp = 0; temp == points; temp++ )
-            {
-                Ellipse saba = new Ellipse();
-                saba.Fill = Brushes.MidnightBlue;
-                if(snakePart == foodShape)
-                {
-                    b.AddLast(saba);
-                }
-            }
+               for (temp = 0; temp == points; temp++ )
+               {
+                   Ellipse saba = new Ellipse();
+                   saba.Fill = Brushes.MidnightBlue;
+                   if(snakePart == foodShape)
+                   {
+                       b.AddLast(saba);
+                   }
+               }
 
-            temp = b.Last();
+               temp = b.Last();*/
+
         }
 
 
@@ -126,7 +148,14 @@ namespace SnakeGame
 
         private void MoveSnake()
         {
+            Rectangle newHead = snakeParts.Last.Value;
+            snakeParts.RemoveLast();
 
+            snakeheadCol--;
+            SetShape(newHead, snakeheadRow, snakeheadCol);
+            snakeParts.AddFirst(newHead);
+
+            /*
             switch (snakeDirection)
             {
                 case Direction.Up:
@@ -161,7 +190,7 @@ namespace SnakeGame
             {
                 ChangePoints(points + 1);
                 InitFood();
-            }
+            }*/
 
         }
 
@@ -208,78 +237,9 @@ namespace SnakeGame
             }
         }
 
-        private void Window_KeyDown_1(object sender, KeyEventArgs e, Direction direction)
+        private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
-           /* if (e.Key == Key.Up)
-            {
-                if (direction == Direction.Down)
-                {
-                    direction = Direction.Down;
-                }
-
-                else 
-                {
-                    direction = Direction.Up;
-                }
-
-            }
-
-            if (e.Key == Key.Up)
-            {
-                if (direction == Direction.Down)
-                {
-                    direction = Direction.Down;
-                }
-
-                else
-                {
-                    direction = Direction.Up;
-                }
-
-            }
-
-            if (e.Key == Key.Down)
-            {
-                if (direction == Direction.Up)
-                {
-                    direction = Direction.Up;
-                }
-
-                else
-                {
-                    direction = Direction.Down;
-                }
-
-            }
-
-            if (e.Key == Key.Right)
-            {
-                if (direction == Direction.Left)
-                {
-                    direction = Direction.Left;
-                }
-
-                else
-                {
-                    direction = Direction.Right;
-                }
-
-            }
-
-            if (e.Key == Key.Left)
-            {
-                if (direction == Direction.Right)
-                {
-                    direction = Direction.Right;
-                }
-
-                else
-                {
-                    direction = Direction.Left;
-                }
-
-            }*/
-
+           
             {
                 if (gamestatus != GameStatus.Ongoing)
                 {
@@ -377,6 +337,7 @@ namespace SnakeGame
 
                         return;
                 }
+
                 ChangeSnakeDirection(direction);
             }
 
