@@ -84,6 +84,7 @@ namespace SnakeGame
             foodRow = rnd.Next(0, Cellcount);
             foodCol = rnd.Next(0, Cellcount);
             SetShape(foodShape, foodRow, foodCol);
+            Panel.SetZIndex(foodShape, 11);
         }
 
         private void ChangePoints(int newPoints)
@@ -197,7 +198,7 @@ namespace SnakeGame
                    CellSize,
                    newHeadRow,
                    newHeadCol,
-                   Brushes.CornflowerBlue,
+                   Brushes.MidnightBlue,
                    10);
                 snakeParts.AddFirst(r);
             }
