@@ -151,29 +151,31 @@ namespace SnakeGame
             Rectangle newHead = snakeParts.Last.Value;
             snakeParts.RemoveLast();
 
-            snakeheadCol--;
             SetShape(newHead, snakeheadRow, snakeheadCol);
-            snakeParts.AddFirst(newHead);
 
-            /*
+            
             switch (snakeDirection)
             {
                 case Direction.Up:
-                    snakePart.Row--;
+                    snakeheadRow--;
+                    snakeParts.AddFirst(newHead);
                     break;
                 case Direction.Down:
-                    snakePart.Row++;
+                    snakeheadRow++;
+                    snakeParts.AddFirst(newHead);
                     break;
                 case Direction.Left:
-                    snakePart.Col--;
+                    snakeheadCol--;
+                    snakeParts.AddFirst(newHead);
                     break;
                 case Direction.Right:
-                    snakePart.Col++;
+                    snakeheadCol++;
+                    snakeParts.AddFirst(newHead);
                     break;
                 default:
                     return;
             }
-
+            /*
             
 
             if (snakePart.Row < 0 || snakePart.Row >= 16 || snakePart.Col < 0 || snakePart.Col >= 16)
