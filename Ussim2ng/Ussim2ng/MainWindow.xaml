@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SnakeGame"
         mc:Ignorable="d"
         Title="Snake Game" 
-        ResizeMode="NoResize" Topmost="True" 
+        ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
         KeyDown="Window_KeyDown_1">
     <Grid>

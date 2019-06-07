@@ -58,8 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DialogResult.cs" />
     <Compile Include="GameStatus.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Snake.cs" />
     <Compile Include="Snakepart.cs" />
     <Page Include="MainWindow.xaml">

@@ -33,9 +33,6 @@ namespace SnakeGame
         int foodRow;
         int foodCol;
 
-        int snakeheadRow;
-        int snakeheadCol;
-
         int points = 0;
         LinkedList<Rectangle> snakeParts = new LinkedList<Rectangle>();
 
@@ -70,26 +67,13 @@ namespace SnakeGame
                 int row = index;
                 int col = index + i;
 
-                Rectangle r = new Rectangle();
-                r.Height = CellSize;
-                r.Width = CellSize;
-                r.Fill = Brushes.MidnightBlue;
-                Panel.SetZIndex(r, 10);
-                SetShape(r, row, index + i);
+                Rectangle r = InitRectangle(CellSize, row, col, Brushes.MidnightBlue, 10);
 
-                SetShape(r, row, col);
-                board.Children.Add(r);
                 snakeParts.AddLast(r);
-
-                if (i == 0)
-                {
-                    snakeheadRow = row;
-                    snakeheadCol = col;
-                }
 
             }
 
-            ChangeSnakeDirection(Direction.Up);
+            ChangeSnakeDirection(Direction.Left);
         }
 
         private void InitFood()
@@ -101,29 +85,6 @@ namespace SnakeGame
             foodCol = rnd.Next(0, Cellcount);
             SetShape(foodShape, foodRow, foodCol);
         }
-
-        private void Eat()
-        {
-
-            /*   LinkedList<int> b = new LinkedList<int>();
-               b.AddLast(1);
-               b.AddLast(2);
-               int temp = b.Last();
-
-               for (temp = 0; temp == points; temp++ )
-               {
-                   Ellipse saba = new Ellipse();
-                   saba.Fill = Brushes.MidnightBlue;
-                   if(snakePart == foodShape)
-                   {
-                       b.AddLast(saba);
-                   }
-               }
-
-               temp = b.Last();*/
-
-        }
-
 
         private void ChangePoints(int newPoints)
         {
@@ -141,59 +102,135 @@ namespace SnakeGame
 
         private void ChangeSnakeDirection(Direction direction)
         {
-            snakeDirection = direction;
-            lblSnakeDirection.Content =
-                $"Direction: {direction}";
+            {
+                if (snakeDirection == Direction.Left &&
+                   direction == Direction.Right)
+                {
+                    return;
+                }
+
+                if (snakeDirection == Direction.Right &&
+                    direction == Direction.Left)
+                {
+                    return;
+                }
+
+                if (snakeDirection == Direction.Up &&
+                    direction == Direction.Down)
+                {
+                    return;
+                }
+
+                if (snakeDirection == Direction.Down &&
+                    direction == Direction.Up)
+                {
+                    return;
+                }
+
+                snakeDirection = direction;
+                lblSnakeDirection.Content =
+                    $"Direction: {direction}";
+            }
         }
 
         private void MoveSnake()
         {
-            Rectangle newHead = snakeParts.Last.Value;
-            snakeParts.RemoveLast();
+            Rectangle currentHead = snakeParts.First.Value;
+            Location currentHeadLocation =
+                (Location)currentHead.Tag;
 
-            SetShape(newHead, snakeheadRow, snakeheadCol);
-
-            
+            int newHeadRow = currentHeadLocation.Row;
+            int newHeadCol = currentHeadLocation.Col;
+    
             switch (snakeDirection)
             {
                 case Direction.Up:
-                    snakeheadRow--;
-                    snakeParts.AddFirst(newHead);
+                    newHeadRow--;
                     break;
                 case Direction.Down:
-                    snakeheadRow++;
-                    snakeParts.AddFirst(newHead);
+                    newHeadRow++;
                     break;
                 case Direction.Left:
-                    snakeheadCol--;
-                    snakeParts.AddFirst(newHead);
+                    newHeadCol--;
                     break;
                 case Direction.Right:
-                    snakeheadCol++;
-                    snakeParts.AddFirst(newHead);
+                    newHeadCol++;
                     break;
-                default:
-                    return;
             }
-            /*
-            
 
-            if (snakePart.Row < 0 || snakePart.Row >= 16 || snakePart.Col < 0 || snakePart.Col >= 16)
+            bool outOfBoundaries =
+                newHeadRow < 0 || newHeadRow >= Cellcount ||
+                newHeadCol < 0 || newHeadCol >= Cellcount;
+            if (outOfBoundaries)
             {
-
                 ChangeGameStatus(GameStatus.GameOver);
                 return;
-
             }
-            SetShape(snakeShape, snakePart.Row, snakePart.Col);
 
-            bool food = snakePart.Row == foodRow && snakePart.Col == foodCol;
+            bool food =
+                newHeadRow == foodRow &&
+               newHeadCol == foodCol;
+
+            foreach (Rectangle r in snakeParts)
+            {
+                if (!food && snakeParts.Last.Value == r)
+                {
+                    continue;
+                }
+
+                Location location = (Location)r.Tag;
+                if (location.Row == newHeadRow &&
+                   location.Col == newHeadCol)
+                {
+                    ChangeGameStatus(GameStatus.GameOver);
+                    return;
+                }
+                
+            }
+
             if (food)
             {
                 ChangePoints(points + 1);
                 InitFood();
-            }*/
 
+                Rectangle r = InitRectangle(
+                   CellSize,
+                   newHeadRow,
+                   newHeadCol,
+                   Brushes.CornflowerBlue,
+                   10);
+                snakeParts.AddFirst(r);
+            }
+            else
+            {
+                Rectangle newHead = snakeParts.Last.Value;
+                newHead.Tag = new Location(newHeadRow, newHeadCol);
+
+                SetShape(newHead, newHeadRow, newHeadCol);
+                snakeParts.RemoveLast();
+                snakeParts.AddFirst(newHead);
+            }
+
+        }
+
+        private Rectangle InitRectangle(
+            double size,
+            int row,
+            int col,
+            Brush fill,
+            int zIndex)
+        {
+            Rectangle r = new Rectangle();
+            r.Height = size;
+            r.Width = size;
+            r.Fill = fill;
+            Panel.SetZIndex(r, zIndex);
+            r.Tag = new Location(row, col);
+
+            SetShape(r, row, col);
+            board.Children.Add(r);
+
+            return r;
         }
 
         private void SetShape(Shape shape, int row, int col)
@@ -219,7 +256,6 @@ namespace SnakeGame
         {
             SolidColorBrush color1 = Brushes.LightGreen;
             SolidColorBrush color2 = Brushes.LimeGreen;
-
             for (int row = 0; row < Cellcount; row++)
             {
                 SolidColorBrush color =
@@ -227,12 +263,9 @@ namespace SnakeGame
 
                 for (int col = 0; col < Cellcount; col++)
                 {
-                    Rectangle r = new Rectangle();
-                    r.Width = CellSize;
-                    r.Height = CellSize;
-                    r.Fill = color;
-                    SetShape(r, col, row);
-                    board.Children.Add(r);
+
+                    InitRectangle(
+                        CellSize, row, col, color, 0);
 
                     color = color == color1 ? color2 : color1;
                 }
@@ -242,7 +275,7 @@ namespace SnakeGame
         private void Window_KeyDown_1(object sender, KeyEventArgs e)
         {
            
-            {
+            
                 if (gamestatus != GameStatus.Ongoing)
                 {
                     return;
@@ -341,7 +374,7 @@ namespace SnakeGame
                 }
 
                 ChangeSnakeDirection(direction);
-            }
+            
 
             
 
